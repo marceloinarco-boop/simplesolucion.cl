@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}Simple Solución{% endblock %}</title>
+<link rel="icon" href="{{ url_for('static', filename='logo.svg') }}" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --azul-osc:#0D2B5C; --azul:#0D47A1; --azul-cla:#4FC3F7;
+    --rojo:#C8102E; --gris:#F4F6FA; --texto:#1A2138; --texto-sec:#5B6478;
+    --ok:#2E7D32; --borde:#E4E8F0;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: 'Inter', -apple-system, Segoe UI, Arial, sans-serif;
+    background: var(--gris); color: var(--texto); margin: 0;
+    background-image: radial-gradient(circle at 15% 0%, #eaf3ff 0%, var(--gris) 45%);
+  }
+  header {
+    background: linear-gradient(120deg, var(--azul-osc), var(--azul));
+    color: #fff; padding: 14px 32px; display: flex; justify-content: space-between; align-items: center;
+    box-shadow: 0 2px 10px rgba(13,43,92,.25);
+    position: sticky; top: 0; z-index: 10;
+  }
+  header .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: #fff; }
+  header .brand img { height: 40px; width: 40px; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,.25); }
+  header .brand span { font-weight: 800; font-size: 19px; letter-spacing: .2px; }
+  header .user-area { display: flex; align-items: center; gap: 14px; font-size: 14px; }
+  header .user-area a { color: #cfe4ff; text-decoration: none; font-weight: 600; transition: color .15s; }
+  header .user-area a:hover { color: #fff; }
+
+  main { max-width: 960px; margin: 40px auto; padding: 0 20px; }
+  h1 { font-size: 28px; font-weight: 800; letter-spacing: -.3px; margin-bottom: 22px; color: var(--azul-osc); }
+  h2 { font-weight: 700; font-size: 18px; margin-top: 4px; color: var(--azul-osc); }
+
+  .card {
+    background: #fff; border-radius: 14px; padding: 28px;
+    box-shadow: 0 1px 3px rgba(20,30,60,.06), 0 8px 24px rgba(20,30,60,.05);
+    margin-bottom: 22px; border: 1px solid var(--borde);
+  }
+
+  label { display: block; margin: 14px 0 5px; font-weight: 600; font-size: 13px; color: var(--texto-sec); text-transform: uppercase; letter-spacing: .3px; }
+  input, select {
+    width: 100%; padding: 10px 12px; border: 1.5px solid var(--borde); border-radius: 8px;
+    font-size: 14px; font-family: inherit; color: var(--texto); transition: border-color .15s, box-shadow .15s;
+    background: #fbfcfe;
+  }
+  input:focus, select:focus { outline: none; border-color: var(--azul-cla); box-shadow: 0 0 0 3px rgba(79,195,247,.18); background: #fff; }
+  input[type=checkbox] { width: auto; accent-color: var(--azul); }
+
+  button, .btn {
+    background: linear-gradient(120deg, var(--azul), var(--azul-osc)); color: #fff; border: none;
+    padding: 11px 22px; border-radius: 9px; font-size: 14px; font-weight: 700; cursor: pointer;
+    text-decoration: none; display: inline-block; margin-top: 18px; letter-spacing: .2px;
+    box-shadow: 0 2px 8px rgba(13,71,161,.25); transition: transform .12s, box-shadow .12s;
+  }
+  button:hover, .btn:hover { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(13,71,161,.35); }
+  button:active, .btn:active { transform: translateY(0); }
+  .btn-secondary { background: linear-gradient(120deg, #64748B, #475569); box-shadow: 0 2px 8px rgba(71,85,105,.25); }
+
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0 18px; }
+  @media (max-width: 640px) { .grid2 { grid-template-columns: 1fr; } }
+
+  .flash { padding: 12px 16px; border-radius: 9px; margin-bottom: 14px; font-size: 14px; font-weight: 500; border-left: 4px solid; }
+  .flash.error { background: #fdecea; color: #B71C1C; border-color: var(--rojo); }
+  .flash.success { background: #eaf7ec; color: var(--ok); border-color: var(--ok); }
+
+  table { width: 100%; border-collapse: collapse; margin-top: 14px; }
+  td, th { padding: 10px 10px; border-bottom: 1px solid var(--borde); font-size: 14px; text-align: left; }
+  tr:last-child td { font-size: 16px; }
+
+  .tool-list { list-style: none; padding: 0; display: grid; gap: 14px; }
+  .tool-list a {
+    display: flex; align-items: center; gap: 16px; background: #fff; padding: 22px;
+    border-radius: 14px; text-decoration: none; color: var(--texto);
+    box-shadow: 0 1px 3px rgba(20,30,60,.06), 0 6px 18px rgba(20,30,60,.05);
+    border: 1px solid var(--borde); transition: transform .15s, box-shadow .15s, border-color .15s;
+  }
+  .tool-list a:hover { transform: translateY(-2px); box-shadow: 0 10px 26px rgba(13,71,161,.14); border-color: var(--azul-cla); }
+  .tool-list .icon {
+    width: 46px; height: 46px; border-radius: 11px; flex-shrink: 0;
+    background: linear-gradient(135deg, var(--azul-cla), var(--azul));
+    display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 18px;
+  }
+  .tool-list strong { font-size: 16px; color: var(--azul-osc); }
+  .tool-list small { color: var(--texto-sec); font-size: 13.5px; }
+</style>
+</head>
+<body>
+<header>
+  <a href="{{ url_for('main.dashboard') if current_user.is_authenticated else url_for('auth.login') }}" class="brand">
+    <img src="{{ url_for('static', filename='logo.svg') }}" alt="Simple Solución">
+    <span>Simple Solución</span>
+  </a>
+  {% if current_user.is_authenticated %}
+  <div class="user-area">
+    <span>👤 {{ current_user.nombre }}</span>
+    <a href="{{ url_for('auth.logout') }}">Cerrar sesión</a>
+  </div>
+  {% endif %}
+</header>
+<main>
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, msg in messages %}
+      <div class="flash {{ category }}">{{ msg }}</div>
+    {% endfor %}
+  {% endwith %}
+  {% block content %}{% endblock %}
+</main>
+</body>
+</html>

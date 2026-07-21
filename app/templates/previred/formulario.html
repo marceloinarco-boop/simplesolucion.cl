@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %}Previred a Excel{% endblock %}
+{% block content %}
+<h1>Previred a Excel</h1>
+<div class="card">
+  <p>Sube uno o varios PDF de Previred (AFP, Fonasa, Mutual). El sistema extrae y consolida los datos de cada trabajador en un solo Excel.</p>
+  <form method="POST" enctype="multipart/form-data">
+    <label>Archivos PDF de Previred</label>
+    <input type="file" name="archivos_pdf" accept=".pdf" multiple required>
+    <button type="submit">Procesar y descargar Excel</button>
+  </form>
+</div>
+{% endblock %}
